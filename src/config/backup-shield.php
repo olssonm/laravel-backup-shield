@@ -5,8 +5,8 @@
         'encryption' => \Olssonm\BackupShield\Encryption::ENCRYPTION_DEFAULT
 
         // Available encryption methods:
-        // ENCRYPTION_DEFAULT (PKWARE/ZipCrypto)
-        // ENCRYPTION_WINZIP_AES_128 (AES 128)
-        // ENCRYPTION_WINZIP_AES_192 (AES 192)
-        // ENCRYPTION_WINZIP_AES_256 (AES 256)
+        // \Olssonm\BackupShield\Encryption::ENCRYPTION_DEFAULT (PKWARE/ZipCrypto)
+        // \Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_128 (AES 128)
+        // \Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_192 (AES 192)
+        // \Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_256 (AES 256)
     ];
