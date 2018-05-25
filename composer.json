@@ -18,8 +18,8 @@
         }
     ],
     "require": {
+        "php": "^7.0",
         "illuminate/support": "~5.5.0|~5.6.0",
-        "php" : "^7.0",
         "nelexa/zip": "^3.1",
         "spatie/laravel-backup": "^5.0"
     },
@@ -50,5 +50,6 @@
             ]
         }
     },
+    "sort-packages": true,
     "minimum-stability": "stable"
 }
