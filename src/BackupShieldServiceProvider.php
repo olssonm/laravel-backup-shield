@@ -24,7 +24,8 @@ class BackupShieldServiceProvider extends ServiceProvider
 
     /**
      * Constructor
-     * @param Illuminate\Foundation\Application $app
+     *
+     * @param \Illuminate\Foundation\Application $app
      */
     public function __construct($app) {
         $this->config = __DIR__ . '/config/backup-shield.php';
@@ -34,6 +35,7 @@ class BackupShieldServiceProvider extends ServiceProvider
 
     /**
      * Perform post-registration booting of services.
+     *
      * @return void
      */
     public function boot()
@@ -48,6 +50,7 @@ class BackupShieldServiceProvider extends ServiceProvider
 
     /**
      * Register any package services.
+     * 
      * @return void
      */
     public function register()
