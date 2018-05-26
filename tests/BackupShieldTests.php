@@ -2,6 +2,7 @@
 
 namespace Olssonm\BackupShield\Tests;
 
+use Spatie\Backup\Tasks\Backup\Zip;
 use Spatie\Backup\Events\BackupZipWasCreated;
 
 class BackupShieldTests extends \Orchestra\Testbench\TestCase {
@@ -34,7 +35,7 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 	{
 		$path = __DIR__ . '/resources/test.zip';
 
-		$data = event(new BackupZipWasCreated($path));
+		$data = event(new BackupZipWasCreated(new Zip($path)));
 
 		$this->assertEquals($path, $data[0]);
 	}

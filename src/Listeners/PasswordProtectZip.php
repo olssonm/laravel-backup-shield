@@ -26,6 +26,6 @@ class PasswordProtectZip
      */
     public function handle(BackupZipWasCreated $event)
     {
-        return (new Password($event->pathToZip))->path;
+        return (new Password($event->zip->getPath()))->path;
     }
 }
