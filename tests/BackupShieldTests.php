@@ -5,6 +5,8 @@ namespace Olssonm\BackupShield\Tests;
 use Spatie\Backup\Tasks\Backup\Zip;
 use Spatie\Backup\Events\BackupZipWasCreated;
 
+use Artisan;
+
 class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 
 	public function setUp()
@@ -26,8 +28,26 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 	/** @test */
 	public function test_config_file_is_installed()
 	{
-		// Look for config.php
-		$this->assertTrue(file_exists(__DIR__ . '/../src/config/backup-shield.php'));
+		// Run the Installation command
+		Artisan::call('vendor:publish', [
+			'--provider' => 'Olssonm\BackupShield\BackupShieldServiceProvider'
+		]);
+
+		$output = Artisan::output();
+		$test1 = false;
+		$test2 = false;
+		$test3 = false;
+
+		if(strpos($output, 'Copied File') !== false) {
+			$test1 = true;
+		}
+
+		if(strpos($output, 'lssonm/laravel-backup-shield/src/config/backup-shield.php') !== false) {
+			$test2 = true;
+		}
+
+		$this->assertTrue($test1);
+		$this->assertTrue($test2);
 	}
 
 	/** @test */
@@ -43,6 +63,7 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 	/** Teardown */
 	public static function tearDownAfterClass()
 	{
+		unlink(base_path('config') . '/backup-shield.php');
 		parent::tearDownAfterClass();
 	}
 }

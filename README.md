@@ -31,7 +31,7 @@ Add the provider to the providers-array in your app.php:
 
 Publish your configuration via `php artisan vendor:publish --provider="Olssonm\BackupShield\BackupShieldServiceProvider"`.
 
-You only have the option to set two different options; password and encryption.
+You only have the ability to set two different options; password and encryption.
 
 ```php
 // Default configuration; backup-shield.php
@@ -41,13 +41,13 @@ return [
 ];
 ```
 
-**Password**
+#### Password
 
-Your password (*duh*). The default is the application key (`APP_KEY` in your .env-file). You might want to set something more appropriate. Remember to use long strings and to keep your password safe – without it you will never be able to open your backup.
+Your password (*duh*). The default is the application key (`APP_KEY` in your .env-file). You might want to set something more appropriate. Remember to use long strings and to keep your password safe – without it you will never be able to retrieve your backup.
 
 Set to `NULL` if you want to keep your backup without a password.
 
-**Encryption**
+#### Encryption
 
 Set your type of encryption. Available options are:
 
@@ -57,6 +57,18 @@ Set your type of encryption. Available options are:
 `\Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_256` (AES 256)  
 
 Note that macOS among other does *not* support the Winzip AES-encryption methods as standard. You might have to buy a separate app and/or license to decrypt and open the protected file. However, if you have the option for AES 256 you should go with that as ZipCrypto may be weak.
+
+## Testing
+
+``` bash
+$ composer test
+```
+
+or
+
+``` bash
+$ phpunit
+```
 
 ## License
 
