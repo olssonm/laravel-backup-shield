@@ -16,7 +16,7 @@ class Password
      * Read the .zip, apply password and encryption, then rewrite the file
      * @param string $path the path to the .zip-file
      */
-    function __construct(string $path)
+    function __construct($path)
     {
         $zip = (new ZipFile())->openFile($path);
         $zip->setPassword(config('backup-shield.password'), config('backup-shield.encryption'));
