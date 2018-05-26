@@ -12,20 +12,25 @@ script:
 matrix:
   include:
     - php: 7.0
-      env: ILLUMINATE_VERSION=5.3.*
-      env: PHPUNIT_VERSION=~5.4
+      env:
+        - ILLUMINATE_VERSION=5.3.*
+        - PHPUNIT_VERSION=~5.4
     - php: 7.0
-      env: ILLUMINATE_VERSION=5.4.*
-      env: PHPUNIT_VERSION=~5.7
+      env:
+        - ILLUMINATE_VERSION=5.4.*
+        - PHPUNIT_VERSION=~5.7
     - php: 7.0
-      env: ILLUMINATE_VERSION=5.5.*
-      env: PHPUNIT_VERSION=~6.0
+      env:
+        - ILLUMINATE_VERSION=5.5.*
+        - PHPUNIT_VERSION=~6.0
     - php: 7.1
-      env: ILLUMINATE_VERSION=5.5.*
-      env: PHPUNIT_VERSION=~6.0
+      env:
+        - ILLUMINATE_VERSION=5.5.*
+        - PHPUNIT_VERSION=~6.0
     - php: 7.2
-      env: ILLUMINATE_VERSION=5.6.*
-      env: PHPUNIT_VERSION=~7.0
+      env:
+        - ILLUMINATE_VERSION=5.6.*
+        - PHPUNIT_VERSION=~7.0
     - php: nightly
-      env: ILLUMINATE_VERSION=5.6.*
-      env: PHPUNIT_VERSION=~7.0
+        - ILLUMINATE_VERSION=5.6.*
+        - PHPUNIT_VERSION=~7.0
