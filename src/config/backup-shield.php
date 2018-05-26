@@ -1,7 +1,7 @@
 <?php
 
     return [
-        'password' => config('app.key'),
+        'password' => env('app.key'),
         'encryption' => \Olssonm\BackupShield\Encryption::ENCRYPTION_DEFAULT
 
         // Available encryption methods:
