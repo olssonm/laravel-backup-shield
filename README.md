@@ -5,8 +5,7 @@
 [![Build Status][ico-travis]][link-travis]
 [![Scrutinizer Score][ico-scrutinizer]][link-scrutinizer]
 
-![backup-shield](https://user-images.githubusercontent.com/907114/40528727-3df1dbcc-5ff2-11e8-99d1-7c4c3340ce13.jpg)
-
+![backup-shield](https://user-images.githubusercontent.com/907114/40585078-b42b31ba-61ac-11e8-9db6-b5497e156f5a.png)
 
 ## Secure your backups
 
@@ -26,7 +25,7 @@ In Laravel > 5.5 the service provider will be automatically added. You can also 
 
 ```php
 'providers' => [
-    Olssonm\Humans\ServiceProvider::class
+    Olssonm\BackupShield\BackupShieldServiceProvider::class
 ]
 ```
 
