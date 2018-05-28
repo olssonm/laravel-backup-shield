@@ -38,7 +38,7 @@ You only have the ability to set two different options; password and encryption.
 ```php
 // Default configuration; backup-shield.php
 return [
-    'password' => env('app.key'),
+    'password' => env('APP_KEY'),
     'encryption' => \Olssonm\BackupShield\Encryption::ENCRYPTION_DEFAULT
 ];
 ```
