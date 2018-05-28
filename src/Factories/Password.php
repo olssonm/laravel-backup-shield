@@ -22,6 +22,10 @@ class Password
         $zip->setPassword(config('backup-shield.password'), config('backup-shield.encryption'));
         $zip->saveAsFile($path);
 
+        if (function_exists('consoleOutput')) {
+            consoleOutput()->info('Applied password and encryption to zipped file.');
+        }
+
         $this->path = $path;
     }
 }

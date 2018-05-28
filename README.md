@@ -3,9 +3,9 @@
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE.md)
 [![Build Status][ico-travis]][link-travis]
+[![Scrutinizer Score][ico-scrutinizer]][link-scrutinizer]
 
-![backup-shield](https://user-images.githubusercontent.com/907114/40528727-3df1dbcc-5ff2-11e8-99d1-7c4c3340ce13.jpg)
-
+![backup-shield](https://user-images.githubusercontent.com/907114/40585078-b42b31ba-61ac-11e8-9db6-b5497e156f5a.png)
 
 ## Secure your backups
 
@@ -25,7 +25,7 @@ In Laravel > 5.5 the service provider will be automatically added. You can also 
 
 ```php
 'providers' => [
-    Olssonm\Humans\ServiceProvider::class
+    Olssonm\BackupShield\BackupShieldServiceProvider::class
 ]
 ```
 
@@ -38,7 +38,7 @@ You only have the ability to set two different options; password and encryption.
 ```php
 // Default configuration; backup-shield.php
 return [
-    'password' => env('app.key'),
+    'password' => env('APP_KEY'),
     'encryption' => \Olssonm\BackupShield\Encryption::ENCRYPTION_DEFAULT
 ];
 ```
@@ -82,5 +82,7 @@ The MIT License (MIT). Please see the [LICENSE.md](LICENSE.md) for more informat
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/olssonm/laravel-backup-shield/master.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/olssonm/laravel-backup-shield.svg?style=flat-square
+[ico-scrutinizer]: https://img.shields.io/scrutinizer/g/olssonm/laravel-backup-shield.svg?style=flat-square
 [link-packagist]: https://packagist.org/packages/olssonm/laravel-backup-shield
 [link-travis]: https://travis-ci.org/olssonm/laravel-backup-shield
+[link-scrutinizer]: https://scrutinizer-ci.com/g/olssonm/laravel-backup-shield
