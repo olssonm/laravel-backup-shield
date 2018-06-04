@@ -18,13 +18,20 @@ class Password
      */
     function __construct(string $path)
     {
-        $zip = (new ZipFile())->openFile($path);
-        $zip->setPassword(config('backup-shield.password'), config('backup-shield.encryption'));
-        $zip->saveAsFile($path);
+        consoleOutput()->comment('Applying password and encryption to zipped file...');
 
-        if (function_exists('consoleOutput')) {
-            consoleOutput()->info('Applied password and encryption to zipped file.');
-        }
+        // Create a new zip, add the existing from spatie/backup and encrypt
+        $zipFile = new ZipFile();
+        $zipFile->addFile($path, 'backup.zip');
+        $zipFile->setPassword(config('backup-shield.password'), config('backup-shield.encryption'));
+        $zipFile->saveAsFile($path);
+        $zipFile->close();
+
+        // $zip = (new ZipFile())->openFile($path);
+        // $zip->setPassword(config('backup-shield.password'), config('backup-shield.encryption'));
+        // $zip->saveAsFile($path);
+
+        consoleOutput()->comment('Applied password and encryption to zipped file.');
 
         $this->path = $path;
     }

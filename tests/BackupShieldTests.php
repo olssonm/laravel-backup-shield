@@ -51,16 +51,33 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 	/** @test */
 	public function test_listener_return_data()
 	{
-		$path = __DIR__ . '/resources/test.zip';
+		// Set parameters for testing
+		$path = __DIR__ . '/resources/test-big.zip';
+		$pathTest = __DIR__ . '/resources/processed.zip';
 
-		$data = event(new BackupZipWasCreated($path));
+		// Make backup
+		copy($path, $pathTest);
 
-		$this->assertEquals($path, $data[0]);
+		// Manually set config
+		config()->set('backup-shield.password', 'W2psdtBz9KWX49tccsr6mYwevyciTdJnJjLjtKSGkVTN1hFLH7YuaMsCBFo7AsAn');
+		config()->set('backup-shield.encruption',  \Olssonm\BackupShield\Encryption::ENCRYPTION_DEFAULT);
+
+		$data = event(new BackupZipWasCreated($pathTest));
+
+		$this->assertEquals($pathTest, $data[0]);
+	}
+
+	/** @test **/
+	public function test_encryption_protection()
+	{
+		// Test that the archive actually is encrypted and password protected
 	}
 
 	/** Teardown */
 	public static function tearDownAfterClass()
 	{
+		// Delete config-file
+		unlink(__DIR__ . '/../vendor/orchestra/testbench-core/laravel/config/backup-shield.php');
 		parent::tearDownAfterClass();
 	}
 }
