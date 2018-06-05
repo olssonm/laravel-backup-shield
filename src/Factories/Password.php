@@ -20,14 +20,14 @@ class Password
     {
         consoleOutput()->info('Applying password and encryption to zip...');
 
-        // Create a new zip, add the zip from spatie/backup, encrypt and resave
+        // Create a new zip, add the zip from spatie/backup, encrypt and resave/overwrite
         $zipFile = new ZipFile();
         $zipFile->addFile($path, 'backup.zip', ZipFile::METHOD_DEFLATED);
         $zipFile->setPassword(config('backup-shield.password'), config('backup-shield.encryption'));
         $zipFile->saveAsFile($path);
         $zipFile->close();
 
-        consoleOutput()->info('Applied password and encryption to zip.');
+        consoleOutput()->info('Successfully applied password and encryption to zip.');
 
         $this->path = $path;
     }

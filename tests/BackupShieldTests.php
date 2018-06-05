@@ -87,7 +87,17 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 	{
 		// Delete config and test-files
 		unlink(__DIR__ . '/resources/processed.zip');
-		unlink(__DIR__ . '/../vendor/orchestra/testbench-core/laravel/config/backup-shield.php');
+
+		$configTestPath = __DIR__ . '/../vendor/orchestra/testbench-core/laravel/config/backup-shield.php';
+		if (file_exists($configTestPath)) {
+			unlink(__DIR__ . '/../vendor/orchestra/testbench-core/laravel/config/backup-shield.php');
+		}
+
+		$configTestPathAlt = __DIR__ . '/../vendor/orchestra/testbench-core/fixture/config/backup-shield.php';
+		if (file_exists($configTestPathAlt)) {
+			unlink(__DIR__ . '/../vendor/orchestra/testbench-core/fixture/config/backup-shield.php');
+		}
+
 		parent::tearDownAfterClass();
 	}
 }
