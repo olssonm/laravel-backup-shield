@@ -25,13 +25,13 @@ matrix:
         - PHPUNIT_VERSION=~6.0
     - php: 7.1
       env:
-        - ILLUMINATE_VERSION=5.5.*
+        - ILLUMINATE_VERSION=5.6.*
         - PHPUNIT_VERSION=~6.0
     - php: 7.2
       env:
-        - ILLUMINATE_VERSION=5.6.*
-        - PHPUNIT_VERSION=~7.0
+        - ILLUMINATE_VERSION=5.7.*
+        - PHPUNIT_VERSION=~7.1
     - php: nightly
       env:
-        - ILLUMINATE_VERSION=5.6.*
-        - PHPUNIT_VERSION=~7.0
+        - ILLUMINATE_VERSION=5.7.*
+        - PHPUNIT_VERSION=~7.1
