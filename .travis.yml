@@ -23,10 +23,10 @@ matrix:
       env:
         - ILLUMINATE_VERSION=5.5.*
         - PHPUNIT_VERSION=~6.0
-    - php: 7.1
+    - php: 7.2
       env:
         - ILLUMINATE_VERSION=5.6.*
-        - PHPUNIT_VERSION=~6.0
+        - PHPUNIT_VERSION=~7.0
     - php: 7.2
       env:
         - ILLUMINATE_VERSION=5.7.*
