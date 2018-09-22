@@ -60,7 +60,7 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 		copy($path, $pathTest);
 
 		// Manually set config
-		config()->set('backup-shield.password', 'W2psdtBz9KWX49tccsr6mYwevyciTdJnJjLjtKSGkVTN1hFLH7YuaMsCBFo7AsAn');
+		config()->set('backup-shield.password', 'Z|n1eMyw3[9&%u=ga$h&');
 		config()->set('backup-shield.encryption',  \Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_256);
 
 		$data = event(new BackupZipWasCreated($pathTest));
