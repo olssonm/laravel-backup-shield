@@ -14,8 +14,8 @@ matrix:
     - php: 7.1
       env:
         - ILLUMINATE_VERSION=5.8.*
-        - PHPUNIT_VERSION=~7.1
+        - PHPUNIT_VERSION=~7.5
     - php: 7.2
       env:
         - ILLUMINATE_VERSION=5.8.*
-        - PHPUNIT_VERSION=~7.1
+        - PHPUNIT_VERSION=~7.5
