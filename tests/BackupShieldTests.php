@@ -83,7 +83,7 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 	}
 
 	/** Teardown */
-	public static function tearDownAfterClass()
+	public static function tearDownAfterClass(): void
 	{
 		// Delete config and test-files
 		unlink(__DIR__ . '/resources/processed.zip');
