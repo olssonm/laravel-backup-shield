@@ -9,7 +9,7 @@ use Artisan;
 
 class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 
-	public function setUp()
+	public function setUp(): void
     {
         parent::setUp();
     }
@@ -83,7 +83,7 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 	}
 
 	/** Teardown */
-	public static function tearDownAfterClass()
+	public static function tearDownAfterClass(): void
 	{
 		// Delete config and test-files
 		unlink(__DIR__ . '/resources/processed.zip');
