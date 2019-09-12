@@ -19,7 +19,7 @@
     ],
     "require": {
         "php": "~7.2",
-        "illuminate/support": "5.8.*",
+        "illuminate/support": "^6.0",
         "nelexa/zip": "^3.1",
         "spatie/laravel-backup": "~5.0|~6.0"
     },
