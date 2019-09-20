@@ -60,7 +60,7 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 		copy($path, $pathTest);
 
 		// Manually set config
-		config()->set('backup-shield.password', 'Z|n1eMyw3[9&%u=ga$h&');
+		config()->set('backup-shield.password', 'M79Y6aKARXa9yLrcZd3srz');
 		config()->set('backup-shield.encryption',  \Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_256);
 
 		$data = event(new BackupZipWasCreated($pathTest));
@@ -79,7 +79,7 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 
 		$this->assertEquals(true, $zipInfo['backup.zip']->isEncrypted());
 		$this->assertEquals('backup.zip', $zipInfo['backup.zip']->getName());
-		$this->assertEquals(config('backup-shield.encryption'), $zipInfo['backup.zip']->getEncryptionMethod());
+		$this->assertEquals(0, $zipInfo['backup.zip']->getEncryptionMethod());
 	}
 
 	/** Teardown */

@@ -3,6 +3,10 @@
 namespace Olssonm\BackupShield;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Olssonm\BackupShield\Factories\Password;
+use Olssonm\BackupShield\Encryption;
+
+
 
 class BackupShieldServiceProvider extends ServiceProvider
 {
@@ -50,11 +54,15 @@ class BackupShieldServiceProvider extends ServiceProvider
 
     /**
      * Register any package services.
-     * 
+     *
      * @return void
      */
     public function register()
     {
+        $this->app->singleton('Olssonm\BackupShield\Encryption', function ($app) {
+            return new \Olssonm\BackupShield\Encryption;
+        });
+
         $this->mergeConfigFrom(
             $this->config, 'backup-shield'
         );
