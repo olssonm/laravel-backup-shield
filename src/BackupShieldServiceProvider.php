@@ -6,8 +6,9 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use Olssonm\BackupShield\Factories\Password;
 use Olssonm\BackupShield\Encryption;
 
-
-
+/**
+ * Laravel service provider for the Backup Shield-package
+ */
 class BackupShieldServiceProvider extends ServiceProvider
 {
     /**
@@ -42,7 +43,7 @@ class BackupShieldServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot() : void
     {
         // Publishing of configuration
         $this->publishes([
@@ -57,7 +58,7 @@ class BackupShieldServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register() : void
     {
         $this->app->singleton('Olssonm\BackupShield\Encryption', function ($app) {
             return new \Olssonm\BackupShield\Encryption;

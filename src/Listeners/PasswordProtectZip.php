@@ -24,7 +24,7 @@ class PasswordProtectZip
      * @param  \Spatie\Backup\Events\BackupZipWasCreated  $event
      * @return string
      */
-    public function handle(BackupZipWasCreated $event)
+    public function handle(BackupZipWasCreated $event) : string
     {
         return (new Password(new \Olssonm\BackupShield\Encryption, $event->pathToZip))->path;
     }
