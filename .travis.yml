@@ -17,12 +17,18 @@ matrix:
     - php: 7.2
       env:
         - ILLUMINATE_VERSION=5.8.*
+      before_script:
+        - pecl install zip
     - php: 7.2
       env:
         - ILLUMINATE_VERSION=6.0.*
+      before_script:
+        - pecl install zip
     - php: 7.2
       env:
         - ILLUMINATE_VERSION=^6.0
+      before_script:
+        - pecl install zip 
     - php: 7.3
       env:
         - ILLUMINATE_VERSION=^6.0

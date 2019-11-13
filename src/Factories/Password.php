@@ -25,7 +25,7 @@ class Password
         consoleOutput()->info('Applying password and encryption to zip...');
 
         // If ZipArchive is enabled
-        if (class_exists('ZipArchive') && version_compare(PHP_VERSION, '7.2.0') >= 0) {
+        if (class_exists('ZipArchive') && version_compare(PHP_VERSION, '7.2.0', '>=') && version_compare(phpversion("zip"), '1.14.0', '>=')) {
             $this->makeZipArchive($encryption, $path);
         }
 
