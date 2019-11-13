@@ -11,10 +11,18 @@ use \ZipArchive;
 class Password
 {
     /**
-     * Path to .zip-fil
+     * Path to .zip-file
+     *
      * @var string
      */
     public $path;
+
+    /**
+     * The chosen password
+     *
+     * @var string
+     */
+    protected $password;
 
     /**
      * Read the .zip, apply password and encryption, then rewrite the file
@@ -22,6 +30,12 @@ class Password
      */
     function __construct(Encryption $encryption, string $path)
     {
+        $this->password = config('backup-shield.password');
+
+        if (!$this->password) {
+            return $this->path = $path;
+        }
+
         // If ZipArchive is enabled
         if (class_exists('ZipArchive') && in_array('setEncryptionIndex', get_class_methods('ZipArchive'))) {
             consoleOutput()->info('Applying password and encryption to zip using ZipArchive...');
@@ -50,13 +64,11 @@ class Password
             'ZipArchive'
         );
 
-        $password = config('backup-shield.password');
-
         $zipArchive = new ZipArchive;
 
         $zipArchive->open($path, ZipArchive::OVERWRITE);
         $zipArchive->addFile($path, 'backup.zip');
-        $zipArchive->setPassword(config('backup-shield.password'));
+        $zipArchive->setPassword($this->password);
         Collection::times($zipArchive->numFiles, function ($i) use ($zipArchive, $encryptionConstant) {
             $zipArchive->setEncryptionIndex($i - 1, $encryptionConstant);
         });
@@ -80,7 +92,7 @@ class Password
 
         $zipFile = new ZipFile();
         $zipFile->addFile($path, 'backup.zip', ZipFile::METHOD_DEFLATED);
-        $zipFile->setPassword(config('backup-shield.password'), $encryptionConstant);
+        $zipFile->setPassword($this->password, $encryptionConstant);
         $zipFile->saveAsFile($path);
         $zipFile->close();
 
