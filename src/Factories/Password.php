@@ -22,15 +22,15 @@ class Password
      */
     function __construct(Encryption $encryption, string $path)
     {
-        consoleOutput()->info('Applying password and encryption to zip...');
-
         // If ZipArchive is enabled
-        if (class_exists('ZipArchive') && version_compare(PHP_VERSION, '7.2.0', '>=') && version_compare(phpversion("zip"), '1.14.0', '>=')) {
+        if (class_exists('ZipArchive') && in_array('setEncryptionIndex', get_class_methods('ZipArchive'))) {
+            consoleOutput()->info('Applying password and encryption to zip using ZipArchive...');
             $this->makeZipArchive($encryption, $path);
         }
 
         // Fall back on PHP-driven ZipFile
         else {
+            consoleOutput()->info('Applying password and encryption to zip using ZipFile...');
             $this->makeZipFile($encryption, $path);
         }
 
