@@ -74,28 +74,32 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 		// Test that the archive actually is encrypted and password protected
 		$path = __DIR__ . '/resources/processed.zip';
 
+		// Use Zip-file to check attributes of the file
 		$zipFile = (new ZipFile())->openFile($path);
 		$zipInfo = $zipFile->getAllInfo();
 
 		$this->assertEquals(true, $zipInfo['backup.zip']->isEncrypted());
 		$this->assertEquals('backup.zip', $zipInfo['backup.zip']->getName());
-		$this->assertEquals(0, $zipInfo['backup.zip']->getEncryptionMethod());
+		$this->assertEquals(1, $zipInfo['backup.zip']->getEncryptionMethod());
 	}
 
 	/** Teardown */
 	public static function tearDownAfterClass(): void
 	{
 		// Delete config and test-files
-		unlink(__DIR__ . '/resources/processed.zip');
-
-		$configTestPath = __DIR__ . '/../vendor/orchestra/testbench-core/laravel/config/backup-shield.php';
-		if (file_exists($configTestPath)) {
-			unlink(__DIR__ . '/../vendor/orchestra/testbench-core/laravel/config/backup-shield.php');
+		$processedFile = __DIR__ . '/resources/processed.zip';
+		if (file_exists($processedFile)) {
+			unlink($processedFile);
 		}
 
-		$configTestPathAlt = __DIR__ . '/../vendor/orchestra/testbench-core/fixture/config/backup-shield.php';
-		if (file_exists($configTestPathAlt)) {
-			unlink(__DIR__ . '/../vendor/orchestra/testbench-core/fixture/config/backup-shield.php');
+		$configTestFile = __DIR__ . '/../vendor/orchestra/testbench-core/laravel/config/backup-shield.php';
+		if (file_exists($configTestFile)) {
+			unlink($configTestFile);
+		}
+
+		$configTestFileAlt = __DIR__ . '/../vendor/orchestra/testbench-core/fixture/config/backup-shield.php';
+		if (file_exists($configTestFileAlt)) {
+			unlink($configTestFileAlt);
 		}
 
 		parent::tearDownAfterClass();

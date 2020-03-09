@@ -55,10 +55,10 @@ class Encryption
      * @var array
      */
     private $zipFileOptions = [
-        self::ENCRYPTION_DEFAULT => ZipFile::ENCRYPTION_METHOD_TRADITIONAL,
-        self::ENCRYPTION_WINZIP_AES_128 => ZipFile::ENCRYPTION_METHOD_WINZIP_AES_128,
-        self::ENCRYPTION_WINZIP_AES_192 => ZipFile::ENCRYPTION_METHOD_WINZIP_AES_192,
-        self::ENCRYPTION_WINZIP_AES_256 => ZipFile::ENCRYPTION_METHOD_WINZIP_AES_256,
+        self::ENCRYPTION_DEFAULT => \PhpZip\Constants\ZipEncryptionMethod::PKWARE,
+        self::ENCRYPTION_WINZIP_AES_128 => \PhpZip\Constants\ZipEncryptionMethod::WINZIP_AES_128,
+        self::ENCRYPTION_WINZIP_AES_192 => \PhpZip\Constants\ZipEncryptionMethod::WINZIP_AES_192,
+        self::ENCRYPTION_WINZIP_AES_256 => \PhpZip\Constants\ZipEncryptionMethod::WINZIP_AES_256,
     ];
 
     /**
