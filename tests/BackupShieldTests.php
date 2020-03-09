@@ -69,6 +69,25 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 	}
 
 	/** @test **/
+	public function test_correct_encrypter_engine()
+	{
+		$path = __DIR__ . '/resources/processed.zip';
+
+		// Use Zip-file to check attributes of the file
+		$zipFile = (new ZipFile())->openFile($path);
+		$zipInfo = $zipFile->getAllInfo();
+
+		// Assume PHP 7.2 and supporter ZipArchive
+		if (class_exists('ZipArchive') && in_array('setEncryptionIndex', get_class_methods('ZipArchive'))) {
+			$this->assertEquals(9, $zipInfo['backup.zip']->getCompressionLevel()); // 9 = ZipArchive
+		}
+		// Fallback on ZipFile
+		else {
+			$this->assertEquals(5, $zipInfo['backup.zip']->getCompressionLevel()); // 5 = ZipFile
+		}
+	}
+
+	/** @test **/
 	public function test_encryption_protection()
 	{
 		// Test that the archive actually is encrypted and password protected
