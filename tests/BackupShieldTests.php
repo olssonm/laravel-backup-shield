@@ -69,33 +69,56 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 	}
 
 	/** @test **/
+	public function test_correct_encrypter_engine()
+	{
+		$path = __DIR__ . '/resources/processed.zip';
+
+		// Use Zip-file to check attributes of the file
+		$zipFile = (new ZipFile())->openFile($path);
+		$zipInfo = $zipFile->getAllInfo();
+
+		// Assume PHP 7.2 and supporter ZipArchive
+		if (class_exists('ZipArchive') && in_array('setEncryptionIndex', get_class_methods('ZipArchive'))) {
+			$this->assertEquals(9, $zipInfo['backup.zip']->getCompressionLevel()); // 9 = ZipArchive
+		}
+		// Fallback on ZipFile
+		else {
+			$this->assertEquals(5, $zipInfo['backup.zip']->getCompressionLevel()); // 5 = ZipFile
+		}
+	}
+
+	/** @test **/
 	public function test_encryption_protection()
 	{
 		// Test that the archive actually is encrypted and password protected
 		$path = __DIR__ . '/resources/processed.zip';
 
+		// Use Zip-file to check attributes of the file
 		$zipFile = (new ZipFile())->openFile($path);
 		$zipInfo = $zipFile->getAllInfo();
 
 		$this->assertEquals(true, $zipInfo['backup.zip']->isEncrypted());
 		$this->assertEquals('backup.zip', $zipInfo['backup.zip']->getName());
-		$this->assertEquals(0, $zipInfo['backup.zip']->getEncryptionMethod());
+		$this->assertEquals(1, $zipInfo['backup.zip']->getEncryptionMethod());
 	}
 
 	/** Teardown */
 	public static function tearDownAfterClass(): void
 	{
 		// Delete config and test-files
-		unlink(__DIR__ . '/resources/processed.zip');
-
-		$configTestPath = __DIR__ . '/../vendor/orchestra/testbench-core/laravel/config/backup-shield.php';
-		if (file_exists($configTestPath)) {
-			unlink(__DIR__ . '/../vendor/orchestra/testbench-core/laravel/config/backup-shield.php');
+		$processedFile = __DIR__ . '/resources/processed.zip';
+		if (file_exists($processedFile)) {
+			unlink($processedFile);
 		}
 
-		$configTestPathAlt = __DIR__ . '/../vendor/orchestra/testbench-core/fixture/config/backup-shield.php';
-		if (file_exists($configTestPathAlt)) {
-			unlink(__DIR__ . '/../vendor/orchestra/testbench-core/fixture/config/backup-shield.php');
+		$configTestFile = __DIR__ . '/../vendor/orchestra/testbench-core/laravel/config/backup-shield.php';
+		if (file_exists($configTestFile)) {
+			unlink($configTestFile);
+		}
+
+		$configTestFileAlt = __DIR__ . '/../vendor/orchestra/testbench-core/fixture/config/backup-shield.php';
+		if (file_exists($configTestFileAlt)) {
+			unlink($configTestFileAlt);
 		}
 
 		parent::tearDownAfterClass();
