@@ -26,7 +26,9 @@ class Password
 
     /**
      * Read the .zip, apply password and encryption, then rewrite the file
-     * @param string $path the path to the .zip-file
+     *
+     * @param Encryption $encryption
+     * @param string     $path
      */
     function __construct(Encryption $encryption, string $path)
     {
