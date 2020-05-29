@@ -16,6 +16,7 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 
     /**
      * Load the package
+     * 
      * @return array the packages
      */
     protected function getPackageProviders($app)
@@ -26,7 +27,7 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
     }
 
 	/** @test */
-	public function test_config_file_is_installed()
+	public function testConfigFileIsInstalled()
 	{
 		// Run the Installation command
 		Artisan::call('vendor:publish', [
@@ -49,8 +50,10 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 		$this->assertTrue($test2);
 	}
 
-	/** @test */
-	public function test_listener_return_data()
+	/**
+	 * @depends testConfigFileIsInstalled
+	 */
+	public function testListenerReturnData()
 	{
 		// Set parameters for testing
 		$path = __DIR__ . '/resources/test.zip';
@@ -68,8 +71,10 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 		$this->assertEquals($pathTest, $data[0]);
 	}
 
-	/** @test **/
-	public function test_correct_encrypter_engine()
+	/**
+	 * @depends testListenerReturnData
+	 */
+	public function testCorrectEncrypterEngine()
 	{
 		$path = __DIR__ . '/resources/processed.zip';
 
@@ -87,8 +92,10 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 		}
 	}
 
-	/** @test **/
-	public function test_encryption_protection()
+	/**
+	 * @depends testCorrectEncrypterEngine
+	 */
+	public function testEncryptionProtection()
 	{
 		// Test that the archive actually is encrypted and password protected
 		$path = __DIR__ . '/resources/processed.zip';
@@ -100,6 +107,19 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 		$this->assertEquals(true, $zipInfo['backup.zip']->isEncrypted());
 		$this->assertEquals('backup.zip', $zipInfo['backup.zip']->getName());
 		$this->assertEquals(1, $zipInfo['backup.zip']->getEncryptionMethod());
+	}
+
+	public function testRetrieveEncryptionConstants()
+	{
+		$encryption = new \Olssonm\BackupShield\Encryption();
+
+		// Default
+		$this->assertEquals('257', $encryption->getEncryptionConstant(\Olssonm\BackupShield\Encryption::ENCRYPTION_DEFAULT, 'ZipArchive'));
+		$this->assertEquals(\PhpZip\Constants\ZipEncryptionMethod::PKWARE, $encryption->getEncryptionConstant(\Olssonm\BackupShield\Encryption::ENCRYPTION_DEFAULT, 'ZipFile'));
+
+		// AES 256
+		$this->assertEquals('259', $encryption->getEncryptionConstant(\Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_256, 'ZipArchive'));
+		$this->assertEquals(\PhpZip\Constants\ZipEncryptionMethod::WINZIP_AES_256, $encryption->getEncryptionConstant(\Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_256, 'ZipFile'));
 	}
 
 	/** Teardown */

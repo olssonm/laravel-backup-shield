@@ -3,9 +3,9 @@
 namespace Olssonm\BackupShield\Factories;
 
 use Illuminate\Support\Collection;
-
 use Olssonm\BackupShield\Encryption;
 use PhpZip\ZipFile;
+use PhpZip\Constants\ZipCompressionMethod;
 use \ZipArchive;
 
 class Password
@@ -26,7 +26,9 @@ class Password
 
     /**
      * Read the .zip, apply password and encryption, then rewrite the file
-     * @param string $path the path to the .zip-file
+     *
+     * @param Encryption $encryption
+     * @param string     $path
      */
     function __construct(Encryption $encryption, string $path)
     {
@@ -91,7 +93,7 @@ class Password
         );
 
         $zipFile = new ZipFile();
-        $zipFile->addFile($path, 'backup.zip', ZipFile::METHOD_DEFLATED);
+        $zipFile->addFile($path, 'backup.zip', ZipCompressionMethod::DEFLATED);
         $zipFile->setPassword($this->password, $encryptionConstant);
         $zipFile->saveAsFile($path);
         $zipFile->close();
