@@ -16,7 +16,7 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 
     /**
      * Load the package
-     * 
+     *
      * @return array the packages
      */
     protected function getPackageProviders($app)
@@ -59,13 +59,14 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 		$path = __DIR__ . '/resources/test.zip';
 		$pathTest = __DIR__ . '/resources/processed.zip';
 
-		// Make backup
+		// Make file ready for testing
 		copy($path, $pathTest);
 
 		// Manually set config
 		config()->set('backup-shield.password', 'M79Y6aKARXa9yLrcZd3srz');
 		config()->set('backup-shield.encryption',  \Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_256);
 
+		// Fire event
 		$data = event(new BackupZipWasCreated($pathTest));
 
 		$this->assertEquals($pathTest, $data[0]);
