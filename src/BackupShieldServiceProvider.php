@@ -3,24 +3,19 @@
 namespace Olssonm\BackupShield;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Event;
+
 use Olssonm\BackupShield\Factories\Password;
 use Olssonm\BackupShield\Encryption;
+
+use Spatie\Backup\Events\BackupZipWasCreated;
+use Olssonm\BackupShield\Listeners\PasswordProtectZip;
 
 /**
  * Laravel service provider for the Backup Shield-package
  */
 class BackupShieldServiceProvider extends ServiceProvider
 {
-    /**
-     * Register listener to the "BackupZipWasCreated" event
-     * @var array
-     */
-    protected $listen = [
-        'Spatie\Backup\Events\BackupZipWasCreated' => [
-            'Olssonm\BackupShield\Listeners\PasswordProtectZip',
-        ],
-    ];
-
     /**
      * Config-path
      * @var string
@@ -49,6 +44,12 @@ class BackupShieldServiceProvider extends ServiceProvider
         $this->publishes([
             $this->config => config_path('backup-shield.php'),
         ]);
+
+        // Listen for the "BackupZipWasCreated" event
+        Event::listen(
+            BackupZipWasCreated::class,
+            PasswordProtectZip::class
+        );
 
         parent::boot();
     }
