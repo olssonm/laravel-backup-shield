@@ -4,8 +4,7 @@ namespace Olssonm\BackupShield\Factories;
 
 use Illuminate\Support\Collection;
 use Olssonm\BackupShield\Encryption;
-use PhpZip\ZipFile;
-use PhpZip\Constants\ZipCompressionMethod;
+
 use \ZipArchive;
 
 class Password
@@ -27,28 +26,20 @@ class Password
     /**
      * Read the .zip, apply password and encryption, then rewrite the file
      *
-     * @param Encryption $encryption
      * @param string     $path
      */
-    function __construct(Encryption $encryption, string $path)
+    function __construct(string $path)
     {
         $this->password = config('backup-shield.password');
 
-        if (!$this->password) {
+        // If no password is set, just return the backup-path
+        if (!$this->password) { 
             return $this->path = $path;
         }
 
-        // If ZipArchive is enabled
-        if (class_exists('ZipArchive') && in_array('setEncryptionIndex', get_class_methods('ZipArchive'))) {
-            consoleOutput()->info('Applying password and encryption to zip using ZipArchive...');
-            $this->makeZipArchive($encryption, $path);
-        }
-
-        // Fall back on PHP-driven ZipFile
-        else {
-            consoleOutput()->info('Applying password and encryption to zip using ZipFile...');
-            $this->makeZipFile($encryption, $path);
-        }
+        consoleOutput()->info('Applying password and encryption to zip using ZipArchive...');
+        
+        $this->makeZip($path);
 
         consoleOutput()->info('Successfully applied password and encryption to zip.');
     }
@@ -56,47 +47,21 @@ class Password
     /**
      * Use native PHP ZipArchive
      *
-     * @param   Encryption $encryption
      * @return  void
      */
-    protected function makeZipArchive(Encryption $encryption, string $path) : void
+    protected function makeZip(string $path): void
     {
-        $encryptionConstant = $encryption->getEncryptionConstant(
-            config('backup-shield.encryption'),
-            'ZipArchive'
-        );
+        $encryption = config('backup-shield.encryption');
 
         $zipArchive = new ZipArchive;
 
         $zipArchive->open($path, ZipArchive::OVERWRITE);
         $zipArchive->addFile($path, 'backup.zip');
         $zipArchive->setPassword($this->password);
-        Collection::times($zipArchive->numFiles, function ($i) use ($zipArchive, $encryptionConstant) {
-            $zipArchive->setEncryptionIndex($i - 1, $encryptionConstant);
+        Collection::times($zipArchive->numFiles, function ($i) use ($zipArchive, $encryption) {
+            $zipArchive->setEncryptionIndex($i - 1, $encryption);
         });
         $zipArchive->close();
-
-        $this->path = $path;
-    }
-
-    /**
-     * Use PhpZip\ZipFile-package to create the zip
-     *
-     * @param   Encryption $encryption
-     * @return  void
-     */
-    protected function makeZipFile(Encryption $encryption, string $path) : void
-    {
-        $encryptionConstant = $encryption->getEncryptionConstant(
-            config('backup-shield.encryption'),
-            'ZipFile'
-        );
-
-        $zipFile = new ZipFile();
-        $zipFile->addFile($path, 'backup.zip', ZipCompressionMethod::DEFLATED);
-        $zipFile->setPassword($this->password, $encryptionConstant);
-        $zipFile->saveAsFile($path);
-        $zipFile->close();
 
         $this->path = $path;
     }
