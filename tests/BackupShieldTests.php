@@ -85,7 +85,7 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 		$stat = null;
 		$zip = new ZipArchive;
 
-		if ($zip->open($path, ZipArchive::RDONLY) === true) {
+		if ($zip->open($path) === true) {
 			$stat = $zip->statIndex(0);
 			$zip->close();
 		} else {
