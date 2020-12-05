@@ -3,11 +3,14 @@
 namespace Olssonm\BackupShield\Tests;
 
 use Spatie\Backup\Events\BackupZipWasCreated;
-use PhpZip\ZipFile;
 
 use Artisan;
+use Exception;
+use ZipArchive;
 
 class BackupShieldTests extends \Orchestra\Testbench\TestCase {
+
+	protected static $password = 'M79Y6aKARXa9yLrcZd3srz';
 
 	public function setUp(): void
     {
@@ -63,7 +66,7 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 		copy($path, $pathTest);
 
 		// Manually set config
-		config()->set('backup-shield.password', 'M79Y6aKARXa9yLrcZd3srz');
+		config()->set('backup-shield.password', self::$password);
 		config()->set('backup-shield.encryption',  \Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_256);
 
 		// Fire event
@@ -79,48 +82,67 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 	{
 		$path = __DIR__ . '/resources/processed.zip';
 
-		// Use Zip-file to check attributes of the file
-		$zipFile = (new ZipFile())->openFile($path);
-		$zipInfo = $zipFile->getAllInfo();
+		$stat = null;
+		$zip = new ZipArchive;
 
-		// Assume PHP 7.2 and supporter ZipArchive
-		if (class_exists('ZipArchive') && in_array('setEncryptionIndex', get_class_methods('ZipArchive'))) {
-			$this->assertEquals(9, $zipInfo['backup.zip']->getCompressionLevel()); // 9 = ZipArchive
+		if ($zip->open($path) === true) {
+			$stat = $zip->statIndex(0);
+			$zip->close();
+		} else {
+			throw Exception('Could not open .zip-file');
 		}
-		// Fallback on ZipFile
-		else {
-			$this->assertEquals(5, $zipInfo['backup.zip']->getCompressionLevel()); // 5 = ZipFile
+		
+		$this->assertEquals('backup.zip', $stat['name']);
+		$this->assertEquals(259, $stat['encryption_method']); // AES 256
+		$this->assertEquals(8, $stat['comp_method']);
+	}
+
+	/**
+	 * @depends testListenerReturnData
+	 */
+	public function testCorrectPasswordProtection()
+	{
+		$path = __DIR__ . '/resources/processed.zip';
+
+		$zip = new ZipArchive;
+
+		if ($zip->open($path) === true) {
+			$zip->setPassword(self::$password);
+			$result = $zip->extractTo(__DIR__ . '/resources/extraction');
+			$this->assertTrue($result);
+			$zip->close();
+		} else {
+			throw Exception('Could not open .zip-file');
 		}
 	}
 
 	/**
-	 * @depends testCorrectEncrypterEngine
+	 * @depends testListenerReturnData
 	 */
-	public function testEncryptionProtection()
+	public function testIncorrectPasswordProtection()
 	{
-		// Test that the archive actually is encrypted and password protected
 		$path = __DIR__ . '/resources/processed.zip';
 
-		// Use Zip-file to check attributes of the file
-		$zipFile = (new ZipFile())->openFile($path);
-		$zipInfo = $zipFile->getAllInfo();
+		$zip = new ZipArchive;
 
-		$this->assertEquals(true, $zipInfo['backup.zip']->isEncrypted());
-		$this->assertEquals('backup.zip', $zipInfo['backup.zip']->getName());
-		$this->assertEquals(1, $zipInfo['backup.zip']->getEncryptionMethod());
+		if ($zip->open($path) === true) {
+			$zip->setPassword('b4dp4$$w0rd');
+			$result = $zip->extractTo(__DIR__ . '/resources/extraction');
+			$this->assertFalse($result);
+			$zip->close();
+		} else {
+			throw Exception('Could not open .zip-file');
+		}
 	}
 
 	public function testRetrieveEncryptionConstants()
 	{
 		$encryption = new \Olssonm\BackupShield\Encryption();
 
-		// Default
-		$this->assertEquals('257', $encryption->getEncryptionConstant(\Olssonm\BackupShield\Encryption::ENCRYPTION_DEFAULT, 'ZipArchive'));
-		$this->assertEquals(\PhpZip\Constants\ZipEncryptionMethod::PKWARE, $encryption->getEncryptionConstant(\Olssonm\BackupShield\Encryption::ENCRYPTION_DEFAULT, 'ZipFile'));
-
-		// AES 256
-		$this->assertEquals('259', $encryption->getEncryptionConstant(\Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_256, 'ZipArchive'));
-		$this->assertEquals(\PhpZip\Constants\ZipEncryptionMethod::WINZIP_AES_256, $encryption->getEncryptionConstant(\Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_256, 'ZipFile'));
+		$this->assertEquals('257', \Olssonm\BackupShield\Encryption::ENCRYPTION_DEFAULT);
+		$this->assertEquals('257', \Olssonm\BackupShield\Encryption::ENCRYPTION_DEFAULT);
+		$this->assertEquals('258', \Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_192);
+		$this->assertEquals('259', \Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_256);
 	}
 
 	/** Teardown */
@@ -141,6 +163,10 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 		if (file_exists($configTestFileAlt)) {
 			unlink($configTestFileAlt);
 		}
+
+		// Delete extracted files
+		array_map('unlink', glob(__DIR__ . "/resources/extraction/*.*"));
+		rmdir(__DIR__ . "/resources/extraction");
 
 		parent::tearDownAfterClass();
 	}

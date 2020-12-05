@@ -18,9 +18,9 @@
         }
     ],
     "require": {
-        "php": "^7.2",
+        "php": "^7.3|^8.0",
+        "ext-zip": "^1.14.0",
         "illuminate/support": "^6.0|^7.0|^8.0",
-        "nelexa/zip": "3.3",
         "spatie/laravel-backup": "~6.0"
     },
     "require-dev": {
