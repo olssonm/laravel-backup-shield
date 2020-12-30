@@ -45,7 +45,7 @@ class BackupShieldTests extends \Orchestra\Testbench\TestCase {
 			$test1 = true;
 		}
 
-		if(strpos($output, '/olssonm/laravel-backup-shield/src/config/backup-shield.php') !== false) {
+		if(strpos($output, 'laravel-backup-shield/src/config/backup-shield.php') !== false) {
 			$test2 = true;
 		}
 

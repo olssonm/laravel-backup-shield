@@ -1,0 +1,44 @@
+name: Run tests
+
+on:
+  push:
+  schedule:
+      - cron: '10 6 * * 1'
+
+jobs:
+    php-tests:
+        runs-on: ubuntu-latest
+
+        strategy:
+            matrix:
+                include:
+                    - php: 8.0
+                      illuminate: ^8.0
+                    - php: 7.4
+                      illuminate: ^8.0
+                    - php: 7.3
+                      illuminate: ^8.0
+                    - php: 7.3
+                      illuminate: ^7.0
+                    - php: 7.3
+                      illuminate: ^6.0
+
+        name: PHP ${{ matrix.php }} - Illuminate ${{ matrix.illuminate }}
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v2
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+
+            - name: Update composer
+              run: composer self-update --2
+
+            - name: Install dependencies
+              run: composer require "illuminate/support:${{ matrix.illuminate }}" --no-interaction --no-progress --no-suggest
+            
+            - name: Execute tests
+              run: vendor/bin/phpunit
