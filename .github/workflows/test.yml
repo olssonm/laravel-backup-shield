@@ -13,7 +13,7 @@ jobs:
             matrix:
                 include:
                     - php: 8.0
-                      testbench: ^8.0
+                      illuminate: ^8.0
                     - php: 7.4
                       illuminate: ^8.0
                     - php: 7.3
