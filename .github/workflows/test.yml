@@ -1,9 +1,6 @@
 name: Run tests
 
-on:
-  push:
-  schedule:
-      - cron: '10 6 * * 1'
+on: [push, pull_request]
 
 jobs:
     php-tests:
@@ -39,6 +36,6 @@ jobs:
 
             - name: Install dependencies
               run: composer require "illuminate/support:${{ matrix.illuminate }}" --no-interaction --no-progress --no-suggest
-            
+
             - name: Execute tests
               run: vendor/bin/phpunit
