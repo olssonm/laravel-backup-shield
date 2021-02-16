@@ -56,7 +56,7 @@ Set your type of encryption. Available options are:
 `\Olssonm\BackupShield\Encryption::ENCRYPTION_DEFAULT` (AES 128)  
 `\Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_128` (AES 128)  
 `\Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_192` (AES 192)  
-`\Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_256` (AES 256)  
+`\Olssonm\BackupShield\Encryption::ENCRYPTION_WINZIP_AES_256` (AES 256)
 
 #### Regarding the layered archive
 
@@ -78,7 +78,7 @@ $ phpunit
 
 The MIT License (MIT). Please see the [LICENSE.md](LICENSE.md) for more information.
 
-© 2020 [Marcus Olsson](https://marcusolsson.me).
+© 2021 [Marcus Olsson](https://marcusolsson.me).
 
 [ico-version]: https://img.shields.io/packagist/v/olssonm/laravel-backup-shield.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
