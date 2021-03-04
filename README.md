@@ -7,6 +7,10 @@
 
 ![backup-shield](https://user-images.githubusercontent.com/907114/40585078-b42b31ba-61ac-11e8-9db6-b5497e156f5a.png)
 
+**⚠️ Password-protection/encryption can now be done natively in [spatie/laravel-backup](https://github.com/spatie/laravel-backup). If you use v6 or v7 of spatie/laravel-backup there is no longer a need to use this package. The development of this package has therefore been halted.** 
+
+**Thanks for using olssonm/laravel-backup-shield!**
+
 ## Secure your backups
 
 **This package helps you encrypt and password-protect your backups taken with [Spatie's](https://github.com/spatie) fantastic [spatie/laravel-backup](https://github.com/spatie/laravel-backup)-package.**
